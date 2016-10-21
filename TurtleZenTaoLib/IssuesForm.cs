@@ -123,10 +123,10 @@ namespace TurtleZenTaoLib
 
 
             task.name = editForm.getTaskName();
+            task.currentConsumed = Convert.ToString(int.Parse(editForm.getConsumed()) - int.Parse(task.consumed));
             task.consumed = editForm.getConsumed();
             task.left = editForm.getLeft();
             task.isDone = editForm.isFinished();
-
             taskList.BeginUpdate();
 
             item.Checked = true;
@@ -140,7 +140,7 @@ namespace TurtleZenTaoLib
             taskList.EndUpdate();
         }
 
-        private TaskInfo queryTaskById(string taskId) {
+        public TaskInfo queryTaskById(string taskId) {
             foreach (TaskInfo task in tasks)
             {
                 if (task.id.Equals(taskId))
@@ -152,7 +152,8 @@ namespace TurtleZenTaoLib
             return null;
         }
 
-        private BugInfo queryBugById(string id) {
+        public BugInfo queryBugById(string id)
+        {
             foreach (BugInfo bug in bugs)
             {
                 if (bug.id.Equals(id))
@@ -326,6 +327,7 @@ namespace TurtleZenTaoLib
             foreach (ListViewItem item in items)
             {
                 item.Checked = selectAllCheckBox.Checked;
+                item.Tag = selectAllCheckBox.Checked;
             }
         }
 

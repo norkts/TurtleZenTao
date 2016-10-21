@@ -255,24 +255,37 @@ namespace TurtleZenTaoLib
         /// </summary>
         /// <param name="taskId"></param>
         /// <returns></returns>
-        public Result<string> updateTask(string taskId, string consumed, string left, string comment)
+        public Result<string> updateTask(TaskInfo task)
         {
+            string taskId = task.id;
+            string consumed = task.consumed;
+            string left = task.left;
+
             Result<string> result = new Result<string>();
             result.status = 1;
             result.msg = Plugin.lang.getText("OperateSucess");
             result.data = "";
 
+            string operate = "recordEstimate";
+
+            string data = "id%5B1%5D=" + taskId + "&dates%5B1%5D=" + DateTime.Now.ToString("yyyy-MM-dd") + "&consumed%5B1%5D=" + task.currentConsumed
+                + "&left%5B1%5D=" + left + "&work%5B1%5D=";
+
+            if (int.Parse(left) < 1)
+            {
+                operate = "finish";
+                data = "consumed=" + consumed + "&assignedTo=" + "&finishedDate=" + DateTime.Now.ToString("yyyy-MM-dd")
+                    + "&comment=";
+            }
+
             RequestType type = getRequestType();
-            string name = "index.php?t=json&m=task&f=recordEstimate&taskID=" + taskId;
+            string name = "index.php?t=json&m=task&f=" + operate  + "&taskID=" + taskId;
             if (type == RequestType.PATH_INFO)
             {
-                name = "task-recordEstimate-" + taskId + ".json";
+                name = "task-" + operate + "-" + taskId + ".json";
             }
 
             string updateUrl = getAPIUrl(name);
-
-            string data = "id%5B1%5D=" + taskId + "&dates%5B1%5D=" + DateTime.Now.ToString("yyyy-MM-dd") + "&consumed%5B1%5D=" + consumed
-                + "&left%5B1%5D=" + left + "&work%5B1%5D=";
 
             string body = HttpClient.post(updateUrl, Encoding.Default.GetBytes(data));
 
@@ -395,6 +408,7 @@ namespace TurtleZenTaoLib
         public string name;
         public string estimate;
         public string consumed;
+        public string currentConsumed;
         public string left;
         public bool isDone;
         public string status;

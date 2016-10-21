@@ -28,7 +28,7 @@ namespace TurtleZenTaoLib
     {
        private SiteManageForm siteManage;
 
-       private IssuesForm issForm;
+       public IssuesForm issForm;
 
        private string repoUrl = "";
        private string repoRoot = "";
@@ -161,7 +161,9 @@ namespace TurtleZenTaoLib
                string consumed = match.Groups[3].Value;
                string left = match.Groups[4].Value;
 
-               zenTaoManage.updateTask(taskId, consumed, left, "");
+               TaskInfo task = issForm.queryTaskById(taskId);
+
+               zenTaoManage.updateTask(task);
 
                if (match.Groups[1].Success)
                {
