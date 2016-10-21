@@ -30,6 +30,9 @@ namespace TurtleZenTaoLib
 
        private IssuesForm issForm;
 
+       private string repoUrl = "";
+       private string repoRoot = "";
+
        public ZenTaoManage zenTaoManage;
 
        public bool pluginInstalled = true;
@@ -81,6 +84,9 @@ namespace TurtleZenTaoLib
            out string[] revPropNames,
            out string[] revPropValues)
        {
+           repoUrl = commonURL;
+           repoRoot = commonRoot;
+
            lang.load(parameters);
 
            bugIDOut = bugID;
@@ -113,8 +119,6 @@ namespace TurtleZenTaoLib
             string[] pathList,
             string commitMessage) 
        {
-           MessageBox.Show("CheckCommit:" + commitMessage);
-           //TODO
            return "";
        }
 
@@ -126,27 +130,46 @@ namespace TurtleZenTaoLib
             int revision)
        {
 
-           string bugReg = "Fix\\s+[Bb]ug#(\\d+)";
+           SVNLog log = new SVNLog();
+           log.files = pathList;
+           log.repoRoot = repoRoot;
+           log.repoUrl = repoUrl;
+           log.revision = Convert.ToString(revision);
+           log.message = logMessage;
+
+           string bugReg = "(Fix\\s+)?[Bb]ug#(\\d+)";
            MatchCollection matches = Regex.Matches(logMessage, bugReg);
            string resText = "";
            foreach(Match match in matches){
+               string operate = match.Groups[1].Value;
+               string bugId = match.Groups[2].Value;
 
-               string bugId = match.Groups[1].Value;
-               resText += "Bug#" + bugId + "已解决\r\n";
-               zenTaoManage.updateBug(bugId);
+               //任务完成
+               if (match.Groups[1].Success) {
+                   resText += "Bug#" + bugId + "已解决\r\n";
+                   zenTaoManage.updateBug(bugId, "");
+               }
+
            }
 
-           string taskReg = "Finish\\s+[Tt]ask#(\\d+).*?,\\s*[Cc]ost:(\\d+)\\s*left:(\\d+)";
+           string taskReg = "(Finish\\s+)?[Tt]ask#(\\d+).*?,\\s*[Cc]ost:(\\d+)\\s*left:(\\d+)";
 
            matches = Regex.Matches(logMessage, taskReg);
            foreach(Match match in matches){
-               string taskId = match.Groups[1].Value;
-               string consumed = match.Groups[2].Value;
-               string left = match.Groups[3].Value;
-               zenTaoManage.updateTask(taskId, consumed, left);
+               string operate = match.Groups[1].Value;
+               string taskId = match.Groups[2].Value;
+               string consumed = match.Groups[3].Value;
+               string left = match.Groups[4].Value;
 
-               resText += "Task#" + taskId + "," + taskId + ", " + consumed + ", " + left + "已完成\r\n";
+               zenTaoManage.updateTask(taskId, consumed, left, "");
+
+               if (match.Groups[1].Success)
+               {
+                   resText += "Task#" + taskId + "," + taskId + ", " + consumed + ", " + left + "已完成\r\n";
+               }
            }
+
+           zenTaoManage.saveSVNLog(log);
 
            return resText;
        }
@@ -210,7 +233,6 @@ namespace TurtleZenTaoLib
 
            if (!loginRes.isSuccess())
            {
-               
                MessageBox.Show(Plugin.lang.getText("login failed") + ":" + loginRes.msg);
            }else {
                siteManage.Hide();
@@ -252,16 +274,38 @@ namespace TurtleZenTaoLib
 
                bool exists = File.Exists(regasmPath);
 
-               Process p = Process.Start(regasmPath, "\"" + dllPath + "\" /codebase /regfile:\"" + regFile + "\"");
+               Process p = new Process();
+               p.StartInfo.FileName = regasmPath;
+               p.StartInfo.UseShellExecute = false;
+               p.StartInfo.RedirectStandardInput = true;
+               p.StartInfo.RedirectStandardOutput = true;
+               p.StartInfo.RedirectStandardError = true;
+               p.StartInfo.CreateNoWindow = true;
+               p.StartInfo.Arguments = "\"" + dllPath + "\" /codebase /regfile:\"" + regFile + "\"";
+
+               p.Start();
+
                p.WaitForExit();
 
-               FileStream fs = new FileStream(regFile, FileMode.Append);
-               StreamWriter sw = new StreamWriter(fs);
+               FileStream fs;
+               fs = new FileStream(regFile, FileMode.Open);
+               StreamReader reader = new StreamReader(fs);
+               string content = reader.ReadToEnd();
+               reader.Close();
+               fs.Close();
+
+
+               fs = new FileStream(regFile, FileMode.Truncate);
+
+               StreamWriter sw = new StreamWriter(fs, Encoding.GetEncoding("GBK"));
+
+               sw.Write(content);
                sw.WriteLine();
                sw.WriteLine("[HKEY_CLASSES_ROOT\\CLSID\\{A26B6C3D-1BA0-4BCA-A809-0E0B6F4A0CEF}\\Implemented Categories\\{3494FA92-B139-4730-9591-01135D5E7831}]");
                sw.Close();
-
-               p = Process.Start("regedit.exe", "\"" + regFile + "\"");
+               fs.Close();
+               
+               p = Process.Start("regedit.exe", "/s \"" + regFile + "\"");
                p.WaitForExit();
 
                

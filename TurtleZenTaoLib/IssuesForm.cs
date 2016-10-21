@@ -69,6 +69,35 @@ namespace TurtleZenTaoLib
 
         }
 
+        public void onStartLoading()
+        {
+            this.statusStrip1.Show();
+            this.toolStripProgressBar1.Minimum = 0;
+            this.toolStripProgressBar1.Maximum = 100;
+            this.toolStripProgressBar1.Value = 50;
+            this.toolStripStatusLabel1.Text = Plugin.lang.getText("Loading");
+            
+        }
+
+        public void onEndLoading()
+        {
+            this.toolStripProgressBar1.Value = 0;
+            this.toolStripStatusLabel1.Text = Plugin.lang.getText("");
+            this.statusStrip1.Hide();
+
+            ListView list = bugList;
+            int titleIndex = 2;
+            if (operate == SearchOperate.TASK)
+            {
+                list = taskList;
+            }
+
+            if (list.Items.Count > 0)
+            {
+                list.Columns[titleIndex].Width = -2;
+            }
+        }
+
         public void editTask(ListViewItem item)
         {
             WorkTimeEditForm editForm = new WorkTimeEditForm();
@@ -78,45 +107,63 @@ namespace TurtleZenTaoLib
             string taskName = "",
                    consumed = "",
                    left = "";
-            bool finished = false;
 
-            foreach (TaskInfo task in tasks)
-            {
-                if (task.id.Equals(taskId))
-                {
-                    taskName = task.name;
-                    consumed = task.consumed;
-                    left = task.left;
-                    finished = task.isDone;
-                    break;
-                }
-            }
+            bool finished = item.SubItems[6].Tag == null ? false : (bool)item.SubItems[6].Tag;
+            TaskInfo task = queryTaskById(taskId);
 
+            taskName = task.name;
+            consumed = task.consumed;
+            left = task.left;
+            finished = finished ? finished : task.isDone;
+
+            //设置弹窗初始化值
             editForm.setValues(taskId, taskName, consumed, left, finished);
 
+            DialogResult result = editForm.ShowDialog();
 
-            editForm.ShowDialog();
 
+            task.name = editForm.getTaskName();
+            task.consumed = editForm.getConsumed();
+            task.left = editForm.getLeft();
+            task.isDone = editForm.isFinished();
+
+            taskList.BeginUpdate();
+
+            item.Checked = true;
+            item.SubItems[2].Text = task.name;
+            item.SubItems[4].Text = task.consumed;
+            item.SubItems[5].Text = task.left;
+            item.SubItems[6].Tag = task.isDone;
+            
+            drawCheckBox(taskList, item.SubItems[6], task.isDone);
+
+            taskList.EndUpdate();
+        }
+
+        private TaskInfo queryTaskById(string taskId) {
             foreach (TaskInfo task in tasks)
             {
                 if (task.id.Equals(taskId))
                 {
-                    task.name = editForm.getTaskName();
-                    task.consumed = editForm.getConsumed();
-                    task.left = editForm.getLeft();
-                    task.isDone = editForm.isFinished();
-
-                    item.SubItems[2].Text = task.name;
-                    item.SubItems[4].Text = task.consumed;
-                    item.SubItems[5].Text = task.left;
-                    item.SubItems[6].Tag = task.isDone;
-
-                    drawCheckBox(taskList, item.SubItems[6], task.isDone);
-                    
-                    break;
+                    return task;
                 }
             }
+
+            return null;
         }
+
+        private BugInfo queryBugById(string id) {
+            foreach (BugInfo bug in bugs)
+            {
+                if (bug.id.Equals(id))
+                {
+                    return bug;
+                }
+            }
+
+            return null;        
+        }
+
 
         private void renwuTabChange(object sender, EventArgs e)
         {
@@ -155,30 +202,40 @@ namespace TurtleZenTaoLib
         }
 
         public void searchBug(string keyword) {
+            onStartLoading();
+
             bugs = plugin.zenTaoManage.searchBugList(keyword);
             
             bugList.Items.Clear();
 
+            this.toolStripProgressBar1.Value = 100;
             foreach (BugInfo bug in bugs)
             {
                 addBugview(bug);
             }
+
+            onEndLoading();
         }
 
         public void searchTask(string keyword)
         {
+            onStartLoading();
             tasks = plugin.zenTaoManage.searchTaskList(keyword);
 
             taskList.Items.Clear();
 
+            this.toolStripProgressBar1.Value = 100;
+            
             foreach (TaskInfo task in tasks)
             {
                 addTaskView(task);
             }
+
+            onEndLoading();
         }
 
         private void IssuesForm_Load(object sender, EventArgs e)
-        {            
+        {
             searchBug("");
         }
 
@@ -259,13 +316,10 @@ namespace TurtleZenTaoLib
             selectAllCheckBox.Text = (selectAllCheckBox.Checked ? Plugin.lang.getText("None") : Plugin.lang.getText("All"));
             ListView.ListViewItemCollection items = bugList.Items;
 
-            if (operate == SearchOperate.TASK)
-            {
+            if (operate == SearchOperate.TASK){
                 items = taskList.Items;
                 taskCheckedState = selectAllCheckBox.Checked;
-            }
-            else
-            {
+            }else{
                 bugCheckedState = selectAllCheckBox.Checked;
             }
 
@@ -287,21 +341,14 @@ namespace TurtleZenTaoLib
                return result;
            }
 
-           List<string> ids = new List<string>();
            foreach (ListViewItem item in bugList.Items)
            {
                if (item.Checked)
                {
-                   ids.Add(item.SubItems[1].Text);
-               }
-
-           }
-
-           foreach(BugInfo bug in bugs){
-               if (ids.Contains(bug.id))
-               {
+                   BugInfo bug = queryBugById(item.SubItems[1].Text);
                    result.Add(bug);
                }
+
            }
 
            return result;    
@@ -324,21 +371,11 @@ namespace TurtleZenTaoLib
            {
                if (item.Checked)
                {
-                   TaskInfo info = new TaskInfo();
-                   ids.Add(item.SubItems[1].Text);
+                   TaskInfo task = queryTaskById(item.SubItems[1].Text);
+                   result.Add(task);
                }
                
            }
-
-           foreach (TaskInfo task in tasks)
-           {
-               if (ids.Contains(task.id))
-               {
-                   result.Add(task);
-               }
-           }
-
-
            return result;       
        }
 
@@ -372,7 +409,7 @@ namespace TurtleZenTaoLib
                 drawCheckBox(listView, e.SubItem, e.SubItem.Tag == null ? false : (bool)e.SubItem.Tag);
             }
             else
-            {
+            {                
                 e.DrawDefault = true;
             }
         }
@@ -446,7 +483,7 @@ namespace TurtleZenTaoLib
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void listview_MouseDown(object sender, MouseEventArgs e)
+        private void listview_MouseUp(object sender, MouseEventArgs e)
         {
             ListView listView = (ListView)sender;
 
@@ -458,44 +495,68 @@ namespace TurtleZenTaoLib
                 return;
             }
 
-            //当点击的是任务的选择列时，弹出编辑任务信息弹窗
-            if (((SearchOperate)listView.Tag == SearchOperate.TASK && hit.Item.SubItems[0] == subItem && !hit.Item.Checked))
-            {
-                editTask(hit.Item);
-                return;
-            }
-
-            //非任务的完成列且非BUG的解决列
-            if (((SearchOperate)listView.Tag != SearchOperate.TASK || hit.Item.SubItems[6] != subItem) 
-                && (((SearchOperate)listView.Tag != SearchOperate.BUG || hit.Item.SubItems[3] != subItem)))
-            {
-                return;
-            }
-
-            //是否绑定了的数据值
-            if (subItem.Tag != null && (bool)subItem.Tag)
+            if (subItem.Tag == null)
             {
                 subItem.Tag = false;
             }
             else
             {
-                subItem.Tag = true;
+                subItem.Tag = !(bool)subItem.Tag;
             }
 
-            if(((SearchOperate)listView.Tag == SearchOperate.BUG && hit.Item.SubItems[3] == subItem)){
-                foreach(BugInfo bug in bugs){
-                    if(hit.Item.SubItems[1].Text.Equals(bug.id)){
-                        bug.isDone = (bool)subItem.Tag;
-                    }
-                }
+            ListViewItem.ListViewSubItem firstSubItem = hit.Item.SubItems[0];
+
+            if ((SearchOperate)listView.Tag == SearchOperate.TASK)
+            {
+                taskListHit(hit);
+            }
+            else {
+                bugListHit(hit);
+            }
+        }
+
+        private void taskListHit(ListViewHitTestInfo hit)
+        {
+            ListViewItem.ListViewSubItem subItem = hit.SubItem;
+
+            if (hit.Item.Tag == null)
+            {
+                hit.Item.Tag = false;
             }
 
-            //绘制复选框
-            drawCheckBox(listView, subItem, (bool)subItem.Tag);
+            //当点击的是任务的选择列时，弹出编辑任务信息弹窗
+            if ((hit.Item.SubItems[0] == subItem || hit.Item.SubItems[6] == subItem) && !(bool)hit.Item.Tag)
+            {
+                hit.Item.Tag = true;
+                editTask(hit.Item);
+            }
+            else {
+                hit.Item.Tag = false;
+            }
+        }
+
+        private void bugListHit(ListViewHitTestInfo hit)
+        {
+            ListViewItem.ListViewSubItem subItem = hit.SubItem;
+
+            //任务已解决
+            if (hit.Item.SubItems[3] == subItem)
+            {
+                BugInfo bug = queryBugById(hit.Item.SubItems[1].Text);
+                bug.isDone = (bool)subItem.Tag;
+
+                //绘制复选框
+                drawCheckBox(bugList, subItem, (bool)subItem.Tag);
+            }
         }
 
         private void listView_DrawItem(object sender, DrawListViewItemEventArgs e)
         {
+            if (e.Item.Tag != null)
+            {
+                e.Item.Checked = (bool)e.Item.Tag;
+            }
+
             e.DrawBackground();
             e.DrawText();
         }

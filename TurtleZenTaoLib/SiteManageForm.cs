@@ -25,6 +25,8 @@ namespace TurtleZenTaoLib
 
             initSiteList();
             Plugin.lang.langProcess(this);
+
+            this.statusStrip1.Hide();
         }
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
@@ -47,25 +49,12 @@ namespace TurtleZenTaoLib
 
         }
 
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            bool installed = plugin.installPlugin();
-
-            if (installed)
-            {
-                installBtn.Hide();
-            }
-            
-        }
-
-
-        public void addWebSite(string siteUrl, string username, string password) {
+        public void addWebSite(string siteUrl, string username, string password, string websiteName) {
             siteListView.BeginUpdate();
             ListViewItem item = new ListViewItem();
             
             item.Text = siteListView.Items.Count + "";
-            
+            item.SubItems.Add(websiteName);
             item.SubItems.Add(siteUrl);
             item.SubItems.Add(username); 
             item.SubItems.Add("******");
@@ -73,7 +62,7 @@ namespace TurtleZenTaoLib
             siteListView.Items.Add(item);
             siteListView.EndUpdate();
 
-            dbManage.addWebsiteInfo(0, siteUrl, username, password);
+            dbManage.addWebsiteInfo(0, siteUrl, username, password, websiteName);
         }
 
         /// <summary>
@@ -91,8 +80,14 @@ namespace TurtleZenTaoLib
             
                 item.Text = siteListView.Items.Count + "";
 
+                string websiteName = "";
+                if(rowItem.Length > 3){
+                    websiteName = rowItem[3];
+                }
+
+                item.SubItems.Add(websiteName);
                 item.SubItems.Add(rowItem[0]);
-                item.SubItems.Add(rowItem[1]); 
+                item.SubItems.Add(rowItem[1]);
                 item.SubItems.Add("******");
 
                 siteListView.Items.Add(item);
@@ -108,18 +103,19 @@ namespace TurtleZenTaoLib
         /// <param name="siteUrl"></param>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public void editWebSite(int index, string siteUrl, string username, string password)
+        public void editWebSite(int index, string siteUrl, string username, string password, string websiteName)
         {
             siteListView.BeginUpdate();
             ListViewItem item = siteListView.Items[index];
 
-            item.SubItems[1].Text = siteUrl;
-            item.SubItems[2].Text = (username);
-            item.SubItems[3].Text = "******";
+            item.SubItems[1].Text = websiteName;
+            item.SubItems[2].Text = siteUrl;
+            item.SubItems[3].Text = username;
+            item.SubItems[4].Text = "******";
 
             siteListView.EndUpdate();
 
-            dbManage.editWebsiteInfo(index, siteUrl, username, password);
+            dbManage.editWebsiteInfo(index, siteUrl, username, password, websiteName);
         }
 
         /// <summary>
@@ -138,8 +134,13 @@ namespace TurtleZenTaoLib
 
             SiteEditForm editForm = new SiteEditForm(this);
             string[] row = dbManage.getWebsites()[index].Split('\t');
+            string websiteName = "";
+            if (row.Length > 3)
+            {
+                websiteName = row[3];
+            }
 
-            editForm.setEditData(selectedItem.Index, row[0], row[1], row[2]);
+            editForm.setEditData(selectedItem.Index, row[0], row[1], row[2], websiteName);
 
             editForm.ShowDialog();
         }
@@ -175,13 +176,12 @@ namespace TurtleZenTaoLib
 
         private void SiteManageForm_Load(object sender, EventArgs e)
         {
-            if (plugin.isPluginInstalled())
+            if (this.siteListView.Items.Count > 0)
             {
-                installBtn.Hide();
-            }
-            else
-            {
-                installBtn.Show();
+                foreach (ColumnHeader head in this.siteListView.Columns)
+                {
+                    head.Width = -2;
+                }
             }
         }
     }

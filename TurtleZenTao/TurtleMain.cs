@@ -23,14 +23,16 @@ namespace TurtleZenTao
             Application.SetCompatibleTextRenderingDefault(false);
 
             Plugin plugin = new Plugin();
-            plugin.pluginInstalled = false;
+            Plugin.lang.load("Chinese");
 
+            plugin.installPlugin();
 
-            if (plugin.ValidateParameters(System.IntPtr.Zero, "")) {
-                string[] param = { };
-                string ret = plugin.GetCommitMessage(System.IntPtr.Zero, "Chinese", string.Empty, param, "original message");
-
-                MessageBox.Show(ret);
+            if (plugin.isPluginInstalled())
+            {
+                MessageBox.Show(Plugin.lang.getText("InstallSuccess"));
+            }
+            else{
+                MessageBox.Show(Plugin.lang.getText("InstallFailed"));
             }
         }
     }

@@ -37,21 +37,23 @@
             this.username = new System.Windows.Forms.TextBox();
             this.websiteUrl = new System.Windows.Forms.TextBox();
             this.password = new System.Windows.Forms.TextBox();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.addWebsiteBtn = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.addWebsiteBtn = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.websiteName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -70,8 +72,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.statusStrip1);
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(508, 261);
-            this.splitContainer1.SplitterDistance = 182;
+            this.splitContainer1.Size = new System.Drawing.Size(508, 325);
+            this.splitContainer1.SplitterDistance = 226;
             this.splitContainer1.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -85,13 +87,16 @@
             this.tableLayoutPanel1.Controls.Add(this.username, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.websiteUrl, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.password, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.websiteName, 1, 3);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(24, 24);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(463, 132);
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(463, 154);
             this.tableLayoutPanel1.TabIndex = 0;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -101,11 +106,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 42);
+            this.label2.Location = new System.Drawing.Point(3, 38);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(116, 42);
+            this.label2.Size = new System.Drawing.Size(116, 38);
             this.label2.TabIndex = 0;
-            this.label2.Text = Plugin.lang.getText("UserName");
+            this.label2.Text = "UserName";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
@@ -114,11 +119,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 84);
+            this.label3.Location = new System.Drawing.Point(3, 76);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(116, 48);
+            this.label3.Size = new System.Drawing.Size(116, 38);
             this.label3.TabIndex = 0;
-            this.label3.Text = Plugin.lang.getText("Password");
+            this.label3.Text = "Password";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
@@ -129,16 +134,16 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 42);
+            this.label1.Size = new System.Drawing.Size(116, 38);
             this.label1.TabIndex = 0;
-            this.label1.Text = Plugin.lang.getText("Website");
+            this.label1.Text = "Website";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // username
             // 
             this.username.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.username.Location = new System.Drawing.Point(125, 52);
+            this.username.Location = new System.Drawing.Point(125, 46);
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(100, 21);
             this.username.TabIndex = 2;
@@ -146,7 +151,7 @@
             // websiteUrl
             // 
             this.websiteUrl.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.websiteUrl.Location = new System.Drawing.Point(125, 10);
+            this.websiteUrl.Location = new System.Drawing.Point(125, 8);
             this.websiteUrl.Name = "websiteUrl";
             this.websiteUrl.Size = new System.Drawing.Size(297, 21);
             this.websiteUrl.TabIndex = 1;
@@ -154,11 +159,33 @@
             // password
             // 
             this.password.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.password.Location = new System.Drawing.Point(125, 97);
+            this.password.Location = new System.Drawing.Point(125, 84);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(100, 21);
             this.password.TabIndex = 3;
             this.password.UseSystemPasswordChar = true;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 73);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(508, 22);
+            this.statusStrip1.TabIndex = 1;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(37, 17);
+            this.toolStripStatusLabel1.Text = "none";
             // 
             // splitContainer2
             // 
@@ -181,7 +208,7 @@
             this.addWebsiteBtn.Name = "addWebsiteBtn";
             this.addWebsiteBtn.Size = new System.Drawing.Size(75, 20);
             this.addWebsiteBtn.TabIndex = 0;
-            this.addWebsiteBtn.Text = Plugin.lang.getText("Add");
+            this.addWebsiteBtn.Text = "Add";
             this.addWebsiteBtn.UseVisualStyleBackColor = true;
             this.addWebsiteBtn.Click += new System.EventHandler(this.addWebsiteBtnClick);
             // 
@@ -192,37 +219,34 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 20);
             this.button2.TabIndex = 0;
-            this.button2.Text = Plugin.lang.getText("Validate");
+            this.button2.Text = "Validate";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // statusStrip1
+            // label4
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripProgressBar1,
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 53);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(508, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = Plugin.lang.getText("statusStrip1");
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Location = new System.Drawing.Point(3, 114);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(116, 40);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "WebsiteName";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // toolStripProgressBar1
+            // websiteName
             // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(37, 17);
-            this.toolStripStatusLabel1.Text = Plugin.lang.getText("none");
+            this.websiteName.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.websiteName.Location = new System.Drawing.Point(125, 123);
+            this.websiteName.Name = "websiteName";
+            this.websiteName.Size = new System.Drawing.Size(100, 21);
+            this.websiteName.TabIndex = 5;
             // 
             // SiteEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(508, 261);
+            this.ClientSize = new System.Drawing.Size(508, 325);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -230,7 +254,7 @@
             this.MinimizeBox = false;
             this.Name = "SiteEditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = Plugin.lang.getText("Site Edit Dialog");
+            this.Text = "Site Edit Dialog";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -238,11 +262,11 @@
             this.splitContainer1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -263,6 +287,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox websiteName;
 
     }
 }

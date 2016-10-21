@@ -23,6 +23,7 @@ namespace TurtleZenTaoLib
             InitializeComponent();
 
             Plugin.lang.langProcess(this);
+            statusStrip1.Hide();
         }
 
         /// <summary>
@@ -34,10 +35,10 @@ namespace TurtleZenTaoLib
         {
             if (operate == SiteOperate.NEW)
             {
-                manageForm.addWebSite(this.websiteUrl.Text, this.username.Text, this.password.Text);
+                manageForm.addWebSite(this.websiteUrl.Text, this.username.Text, this.password.Text, this.websiteName.Text);
             }
             else {
-                manageForm.editWebSite(editIndex, websiteUrl.Text, username.Text, password.Text);
+                manageForm.editWebSite(editIndex, websiteUrl.Text, username.Text, password.Text, this.websiteName.Text);
             }
             
             setOperate(SiteOperate.NEW);
@@ -59,6 +60,7 @@ namespace TurtleZenTaoLib
                     this.websiteUrl.Text = "";
                     this.username.Text = "";
                     this.password.Text = "";
+                    this.websiteName.Text = "";
                 } break;
             }
         }
@@ -70,13 +72,14 @@ namespace TurtleZenTaoLib
         /// <param name="url"></param>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public void setEditData(int index, string url, string username, string password) {
+        public void setEditData(int index, string url, string username, string password, string websiteName) {
 
             this.editIndex = index;
 
             this.websiteUrl.Text = url;
             this.username.Text = username;
             this.password.Text = password;
+            this.websiteName.Text = websiteName;
 
             setOperate(SiteOperate.EDIT);
 
@@ -95,14 +98,34 @@ namespace TurtleZenTaoLib
 
         private void button2_Click(object sender, EventArgs e)
         {
+            onStartLoading();
             Result<string> result = ZenTaoManage.login(websiteUrl.Text, username.Text, password.Text);
+
+            this.toolStripProgressBar1.Value = 100;
             if (result.isSuccess())
             {
-                MessageBox.Show(Plugin.lang.getText("Login success"));
+                MessageBox.Show(Plugin.lang.getText("LoginSuccess"));
             }else
             {
                 MessageBox.Show(result.msg);
             }
+
+            onEndLoading();
+        }
+
+        public void onStartLoading() {
+            this.statusStrip1.Show();
+            this.toolStripProgressBar1.Minimum = 0;
+            this.toolStripProgressBar1.Maximum = 100;
+            this.toolStripProgressBar1.Value = 50;
+            this.toolStripStatusLabel1.Text = Plugin.lang.getText("Loading");
+            this.Update();
+        }
+
+        public void onEndLoading() {
+            this.toolStripProgressBar1.Value = 0;
+            this.toolStripStatusLabel1.Text = Plugin.lang.getText("");
+            this.statusStrip1.Hide();
         }
 
         private void splitContainer2_Panel2_Paint(object sender, PaintEventArgs e)

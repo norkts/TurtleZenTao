@@ -1,9 +1,9 @@
-Choose Issue	选择站点 
+Choose Issue	从禅道中选择 
 login failed	登录失败
 statusStrip1	状态栏
 none	无
 Search	搜索
-Bug	BUG
+Bug	Bug
 Operate	操作
 Title	标题
 Task	任务
@@ -29,7 +29,7 @@ No	序号
 Edit	编辑
 Remove	移除
 Website Manage Dialog	网站管理
-Login Success	登录成功
+LoginSuccess	登录成功
 Resolved	已解决
 BugID	BugID
 Select	选择
@@ -40,3 +40,8 @@ ConsumeTime	已耗时
 LeftTime	剩余时间
 WorkTimeEdit	工时统计
 OperateSucess	操作成功
+InstallSuccess	安装成功
+InstallFailed	安装失败
+Loading	加载中
+WebsiteName	网站名称
+LoadFailed	加载失败

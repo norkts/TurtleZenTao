@@ -218,7 +218,7 @@
             this.bugList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.listView_DrawColumnHeader);
             this.bugList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.listView_DrawItem);
             this.bugList.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.listview_DrawSubItem);
-            this.bugList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listview_MouseDown);
+            this.bugList.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listview_MouseUp);
             // 
             // columnHeader1
             // 
@@ -276,8 +276,7 @@
             this.taskList.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.listView_DrawColumnHeader);
             this.taskList.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.listView_DrawItem);
             this.taskList.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.listview_DrawSubItem);
-            this.taskList.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
-            this.taskList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listview_MouseDown);
+            this.taskList.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listview_MouseUp);
             // 
             // columnHeader4
             // 

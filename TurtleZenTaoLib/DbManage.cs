@@ -30,8 +30,8 @@ namespace TurtleZenTaoLib
         /// <param name="user"></param>
         /// <param name="pass"></param>
         /// <returns></returns>
-        public bool addWebsiteInfo(int index, string url, string user, string pass){
-            string row = url + "\t" + user + "\t" + pass;
+        public bool addWebsiteInfo(int index, string url, string user, string pass, string websiteName){
+            string row = url + "\t" + user + "\t" + pass + "\t " + websiteName;
             rows.Add(row);
 
             save();
@@ -47,9 +47,9 @@ namespace TurtleZenTaoLib
         /// <param name="user"></param>
         /// <param name="pass"></param>
         /// <returns></returns>
-        public bool editWebsiteInfo(int index, string url, string user, string pass)
+        public bool editWebsiteInfo(int index, string url, string user, string pass, string websiteName)
         {
-            rows[index] = url + "\t" + user + "\t" + pass;
+            rows[index] = url + "\t" + user + "\t" + pass + "\t" + websiteName;
             save();
             return true;
         }

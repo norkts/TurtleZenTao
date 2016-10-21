@@ -95,8 +95,16 @@ namespace TurtleZenTaoLib
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();
+                    string[] items = line.Split('\t');
 
-                    langMap.Add(line.Split('\t')[0], line.Split('\t')[1]);
+                    if (items.Length > 1)
+                    {
+                        langMap.Add(items[0], items[1]);
+                    }
+                    else {
+                        MessageBox.Show("语言包 " + path + "存在问题:" + line);
+                    }
+
                 }
 
                 reader.Close();

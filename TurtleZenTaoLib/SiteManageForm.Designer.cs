@@ -36,7 +36,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.addSiteBtn = new System.Windows.Forms.Button();
-            this.installBtn = new System.Windows.Forms.Button();
             this.siteListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -75,7 +74,7 @@
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(37, 17);
-            this.toolStripStatusLabel1.Text = Plugin.lang.getText("none");
+            this.toolStripStatusLabel1.Text = "none";
             this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // splitContainer1
@@ -101,17 +100,17 @@
             this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 77F));
             this.tableLayoutPanel1.Controls.Add(this.addSiteBtn, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.installBtn, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 9);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 33);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(239, 33);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // addSiteBtn
@@ -120,29 +119,19 @@
             this.addSiteBtn.Name = "addSiteBtn";
             this.addSiteBtn.Size = new System.Drawing.Size(75, 23);
             this.addSiteBtn.TabIndex = 0;
-            this.addSiteBtn.Text = Plugin.lang.getText("Add Website");
+            this.addSiteBtn.Text = "Add Website";
             this.addSiteBtn.UseVisualStyleBackColor = true;
             this.addSiteBtn.Click += new System.EventHandler(this.addSiteBtnClick);
-            // 
-            // installBtn
-            // 
-            this.installBtn.Location = new System.Drawing.Point(103, 3);
-            this.installBtn.Name = "installBtn";
-            this.installBtn.Size = new System.Drawing.Size(75, 23);
-            this.installBtn.TabIndex = 1;
-            this.installBtn.Text = Plugin.lang.getText("Install Plugin");
-            this.installBtn.UseVisualStyleBackColor = true;
-            this.installBtn.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // siteListView
             // 
             this.siteListView.Alignment = System.Windows.Forms.ListViewAlignment.Default;
             this.siteListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
+            this.columnHeader5,
             this.columnHeader2,
             this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5});
+            this.columnHeader4});
             this.siteListView.ContextMenuStrip = this.contextMenuStrip1;
             this.siteListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.siteListView.FullRowSelect = true;
@@ -159,26 +148,27 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = Plugin.lang.getText("No");
+            this.columnHeader1.Text = "No";
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = Plugin.lang.getText("Website");
-            this.columnHeader2.Width = 172;
+            this.columnHeader2.Text = "Website";
+            this.columnHeader2.Width = 134;
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = Plugin.lang.getText("UserName");
+            this.columnHeader3.Text = "UserName";
             this.columnHeader3.Width = 103;
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = Plugin.lang.getText("Password");
+            this.columnHeader4.Text = "Password";
             this.columnHeader4.Width = 148;
             // 
             // columnHeader5
             // 
-            this.columnHeader5.Text = Plugin.lang.getText("Operate");
+            this.columnHeader5.Text = "WebsiteName";
+            this.columnHeader5.Width = 101;
             // 
             // contextMenuStrip1
             // 
@@ -186,20 +176,20 @@
             this.编辑ToolStripMenuItem,
             this.删除ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(101, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 48);
             // 
             // 编辑ToolStripMenuItem
             // 
             this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
-            this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.编辑ToolStripMenuItem.Text = Plugin.lang.getText("Edit");
+            this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.编辑ToolStripMenuItem.Text = "Edit";
             this.编辑ToolStripMenuItem.Click += new System.EventHandler(this.onEditClick);
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.删除ToolStripMenuItem.Text = Plugin.lang.getText("Remove");
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.删除ToolStripMenuItem.Text = "Remove";
             this.删除ToolStripMenuItem.Click += new System.EventHandler(this.onDeleteClick);
             // 
             // SiteManageForm
@@ -212,7 +202,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SiteManageForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = Plugin.lang.getText("Website Manage Dialog");
+            this.Text = "Website Manage Dialog";
             this.Load += new System.EventHandler(this.SiteManageForm_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -236,7 +226,6 @@
         private System.Windows.Forms.ListView siteListView;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button addSiteBtn;
-        private System.Windows.Forms.Button installBtn;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
